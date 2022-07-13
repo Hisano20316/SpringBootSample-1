@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.domain.user.model.MUser;
@@ -40,4 +41,24 @@ public class UserDetailController {
         //ユーザ詳細画面を表示
         return "user/detail";
     }
+
+    /*ユーザ更新処理*/
+    @PostMapping(value = "/detail",params = "update")
+    public String updateUser(UserDetailForm form,Model model) {
+        userService.updateUserOne(form.getUserId(),form.getPassword(),form.getUserName());
+
+        //ユーザ一覧画面にリダイレクト
+        return "redirect:/user/list";
+    }
+
+    /*ユーザ削除処理*/
+    @PostMapping(value = "/detail",params = "delete")
+    public String deleteUser(UserDetailForm form,Model model) {
+        //ユーザを削除
+        userService.deleteUserOne(form.getUserId());
+
+        //ユーザ一覧にリダイレクト
+        return "redirect:/user/list";
+    }
+
 }
